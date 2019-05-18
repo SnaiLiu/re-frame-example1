@@ -38,8 +38,10 @@
 
 (re-frame/reg-event-fx
   ::lucky-draw
-  [(re-frame/inject-cofx :random-num)]
-  (fn [{:keys [db random-num] :as coeffects} [_]]
+  [(re-frame/inject-cofx :random-num)
+   (re-frame/inject-cofx :now)]
+  (fn [{:keys [db random-num now] :as coeffects} [_]]
+    (prn "now===" now)
     (cond
       (<= 0 random-num 3)
       {:db (assoc db :lucky-draw-result "恭喜您中了3等奖！")}
@@ -75,5 +77,10 @@
   :random-num
   (fn [coeffects _]
     (assoc coeffects :random-num (rand-int 10))))
+
+(re-frame/reg-cofx
+  :now
+  (fn [coeffects _]
+    (assoc coeffects :now "1:00:00")))
 
 
